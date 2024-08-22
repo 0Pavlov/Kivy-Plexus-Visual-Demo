@@ -1,10 +1,25 @@
 # noinspection PyProtectedMember
 from kivy.app import App, Builder
 from kivy.clock import Clock
+from kivy.properties import (
+    ListProperty,
+)
 from kivy.uix.widget import Widget
 
 Builder.load_string(
     """
+<Particle>:
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 1
+        Ellipse:
+            size: self.size
+            pos: self.pos
+        Color:
+            rgba: 1, 0, 0, .5
+        Rectangle:
+            size: self.size
+            pos: self.pos
     """
 )
 
@@ -21,10 +36,21 @@ class Plexus(Widget):
         Does stuff on the app's startup.
         """
         super(Plexus, self).__init__(**kwargs)
+        self.particle = Particle()
+        self.add_widget(self.particle)
 
     def update(self, dt: float) -> None:
         """Updates the screen."""
         pass
+
+
+class Particle(Widget):
+    """Represents the single particle.
+
+    Attributes:
+        size (ListProperty): Size of the particle in pixels.
+    """
+    size = ListProperty([20, 20])
 
 
 class PlexusApp(App):
