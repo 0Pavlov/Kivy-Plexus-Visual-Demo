@@ -38,21 +38,25 @@ class Plexus(Widget):
         Does stuff on the app's startup.
         """
         super(Plexus, self).__init__(**kwargs)
-        self.particle = Particle()
-        # Assign random velocity
-        self.particle.velocity_x = choice([-3, -2, -1, 1, 2, 3])
-        self.particle.velocity_y = choice([-3, -2, -1, 1, 2, 3])
-        # Assign random position
-        self.particle.pos = [
-            randint(0, self.width - self.particle.width),
-            randint(0, self.height - self.particle.height)
-        ]
-        self.add_widget(self.particle)
+        self.particles = []
+        for _ in range(25):
+            particle = Particle()
+            # Assign random velocity
+            particle.velocity_x = choice([-3, -2, -1, 1, 2, 3])
+            particle.velocity_y = choice([-3, -2, -1, 1, 2, 3])
+            # Assign random position
+            particle.pos = [
+                randint(0, 1000),
+                randint(0, 1000)
+            ]
+            self.particles.append(particle)
+            self.add_widget(particle)
 
     # noinspection PyUnusedLocal
     def update(self, dt: float) -> None:
         """Updates the screen."""
-        self.particle.move()
+        for particle in self.particles:
+            particle.move()
 
 
 class Particle(Widget):
