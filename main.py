@@ -1,13 +1,11 @@
+from random import choice, randint
+
 # noinspection PyProtectedMember
 from kivy.app import App, Builder
 from kivy.clock import Clock
-from kivy.properties import (
-    ListProperty,
-    NumericProperty,
-)
-from kivy.uix.widget import Widget
 from kivy.graphics import Color, Line
-from random import choice, randint
+from kivy.properties import ListProperty, NumericProperty
+from kivy.uix.widget import Widget
 
 Builder.load_string(
     """
@@ -41,10 +39,7 @@ class Plexus(Widget):
             particle.velocity_x = choice([-3, -2, -1, 1, 2, 3])
             particle.velocity_y = choice([-3, -2, -1, 1, 2, 3])
             # Assign random position
-            particle.pos = [
-                randint(0, 1000),
-                randint(0, 1000)
-            ]
+            particle.pos = [randint(0, 1000), randint(0, 1000)]
             self.particles.append(particle)
             self.add_widget(particle)
 
@@ -67,7 +62,7 @@ class Plexus(Widget):
                         Color(1, 1, 1, 0.3)
                         Line(
                             points=[p1.x + 10, p1.y + 10, p2.x + 10, p2.y + 10],
-                            width=line_width
+                            width=line_width,
                         )
 
 
@@ -82,6 +77,7 @@ class Particle(Widget):
     Methods:
         move(): Moves the particle and handles collisions with the parent's boundaries.
     """
+
     size = ListProperty([20, 20])
     velocity_x = NumericProperty(0)
     velocity_y = NumericProperty(0)
@@ -136,5 +132,5 @@ class PlexusApp(App):
         return root
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     PlexusApp().run()
