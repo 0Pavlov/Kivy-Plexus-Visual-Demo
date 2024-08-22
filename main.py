@@ -6,6 +6,7 @@ from kivy.properties import (
     NumericProperty,
 )
 from kivy.uix.widget import Widget
+from kivy.graphics import Color, Line
 from random import choice, randint
 
 Builder.load_string(
@@ -15,11 +16,6 @@ Builder.load_string(
         Color:
             rgba: 1, 1, 1, 1
         Ellipse:
-            size: self.size
-            pos: self.pos
-        Color:
-            rgba: 1, 0, 0, .5
-        Rectangle:
             size: self.size
             pos: self.pos
     """
@@ -58,6 +54,22 @@ class Plexus(Widget):
         for particle in self.particles:
             particle.move()
 
+        self.canvas.after.clear()  # Clear previous lines
+        with self.canvas.after:
+            for i in range(len(self.particles)):
+                for j in range(i + 1, len(self.particles)):
+                    p1 = self.particles[i]
+                    p2 = self.particles[j]
+                    distance = ((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2) ** 0.5
+                    connect_distance = 200
+                    if distance < connect_distance:
+                        line_width = 3 * (1 - distance / connect_distance)
+                        Color(1, 1, 1, 0.3)
+                        Line(
+                            points=[p1.x + 10, p1.y + 10, p2.x + 10, p2.y + 10],
+                            width=line_width
+                        )
+
 
 class Particle(Widget):
     """Represents the single particle.
@@ -66,12 +78,10 @@ class Particle(Widget):
         size (ListProperty): Size of the particle in pixels.
         velocity_x (NumericProperty): Particle's x-axis velocity.
         velocity_y (NumericProperty): Particle's y-axis velocity.
-        pos (ListProperty): Particle's position (x, y) in pixels.
 
     Methods:
         move(): Moves the particle and handles collisions with the parent's boundaries.
     """
-    pos = ListProperty([0, 0])
     size = ListProperty([20, 20])
     velocity_x = NumericProperty(0)
     velocity_y = NumericProperty(0)
