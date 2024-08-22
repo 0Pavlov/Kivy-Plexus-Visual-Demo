@@ -6,7 +6,7 @@ from kivy.properties import (
     NumericProperty,
 )
 from kivy.uix.widget import Widget
-from random import choice
+from random import choice, randint
 
 Builder.load_string(
     """
@@ -39,10 +39,17 @@ class Plexus(Widget):
         """
         super(Plexus, self).__init__(**kwargs)
         self.particle = Particle()
+        # Assign random velocity
         self.particle.velocity_x = choice([-3, -2, -1, 1, 2, 3])
         self.particle.velocity_y = choice([-3, -2, -1, 1, 2, 3])
+        # Assign random position
+        self.particle.pos = [
+            randint(0, self.width - self.particle.width),
+            randint(0, self.height - self.particle.height)
+        ]
         self.add_widget(self.particle)
 
+    # noinspection PyUnusedLocal
     def update(self, dt: float) -> None:
         """Updates the screen."""
         self.particle.move()
